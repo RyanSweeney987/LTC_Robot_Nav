@@ -1,0 +1,98 @@
+Model name is FFCNN and it uses all images
+t1_FFCNN_1, batch_2/batch_3/batch_4
+OOM trying again, halving batch size from 32 to 16
+OOM trying again, halving batch size from 16 to 8
+OOm trying again, halving batch size from 8 to 4
+Cannot use FFCNN using all images 
+LOG =  	20220430-012228
+
+Model name is CNNModel3 and it uses all images
+OOM with all the images
+Restricting to dataset 1 and 3, batches 1 and 3
+OOM 
+Restricting to dataset 3
+CNNModel3 training 1 90% val_accuracy - 100% accuracy
+
+Model name is CNNModel4 and it uses dataset 3
+Updating model 4 to include
+	keras.layers.TimeDistributed(keras.layers.Dropout(0.5)),
+	keras.layers.TimeDistributed(keras.layers.Dense(128, activation="relu")),
+	keras.layers.TimeDistributed(keras.layers.Dropout(0.25)),
+from
+	ncp_arch = wirings.NCP(
+		inter_neurons=30,  # Number of inter neurons
+		command_neurons=30,  # Number of command neurons
+		motor_neurons=4,  # Number of motor neurons
+		sensory_fanout=15,  # How many outgoing synapses has each sensory neuron
+		inter_fanout=15,  # How many outgoing synapses has each inter neuron
+		recurrent_command_synapses=12,  # Now many recurrent synapses are in the
+		# command neuron layer
+		motor_fanin=16,  # How many incoming synapses has each motor neuron
+	)
+to
+	ncp_arch = wirings.NCP(
+		inter_neurons=10,  # Number of inter neurons
+		command_neurons=10,  # Number of command neurons
+		motor_neurons=4,  # Number of motor neurons
+		sensory_fanout=5,  # How many outgoing synapses has each sensory neuron
+		inter_fanout=5,  # How many outgoing synapses has each inter neuron
+		recurrent_command_synapses=6,  # Now many recurrent synapses are in the
+		# command neuron layer
+		motor_fanin=6,  # How many incoming synapses has each motor neuron
+	)
+
+Log = 20220430-034550
+
+from 
+model = keras.models.Sequential(
+		[
+			keras.layers.InputLayer(input_shape=inputs),
+			keras.layers.TimeDistributed(
+				keras.layers.Conv2D(16, (3, 3), activation="relu", padding="same")
+			),
+			keras.layers.TimeDistributed(keras.layers.MaxPool2D(pool_size=(2,2), strides=(2,2), padding="same")),
+			keras.layers.TimeDistributed(
+				keras.layers.Conv2D(32, (3, 3), activation="relu", padding="same")
+			),
+			keras.layers.TimeDistributed(keras.layers.MaxPool2D(pool_size=(2,2), strides=(2,2), padding="same")),
+			keras.layers.TimeDistributed(
+				keras.layers.Conv2D(64, (3, 3), activation="relu", padding="same")
+			),
+			keras.layers.TimeDistributed(keras.layers.MaxPool2D(pool_size=(2,2), strides=(2,2), padding="same")),
+			keras.layers.TimeDistributed(keras.layers.Flatten()),
+			keras.layers.TimeDistributed(keras.layers.Dense(256, activation="relu")),
+			keras.layers.TimeDistributed(keras.layers.Dropout(0.5)),
+			keras.layers.TimeDistributed(keras.layers.Dense(128, activation="relu")),
+			keras.layers.TimeDistributed(keras.layers.Dropout(0.25)),
+			keras.layers.RNN(ncp_cell, return_sequences=True),
+			keras.layers.TimeDistributed(keras.layers.Activation("softmax")),
+		]
+	)
+to
+	model = keras.models.Sequential(
+		[
+			keras.layers.InputLayer(input_shape=inputs),
+			keras.layers.TimeDistributed(
+				keras.layers.Conv2D(8, (3, 3), activation="relu", padding="same")
+			),
+			keras.layers.TimeDistributed(keras.layers.MaxPool2D(pool_size=(2,2), strides=(2,2), padding="same")),
+			keras.layers.TimeDistributed(
+				keras.layers.Conv2D(16, (3, 3), activation="relu", padding="same")
+			),
+			keras.layers.TimeDistributed(keras.layers.MaxPool2D(pool_size=(2,2), strides=(2,2), padding="same")),
+			keras.layers.TimeDistributed(
+				keras.layers.Conv2D(32, (3, 3), activation="relu", padding="same")
+			),
+			keras.layers.TimeDistributed(keras.layers.MaxPool2D(pool_size=(2,2), strides=(2,2), padding="same")),
+			keras.layers.TimeDistributed(keras.layers.Flatten()),
+			keras.layers.TimeDistributed(keras.layers.Dense(128, activation="relu")),
+			keras.layers.TimeDistributed(keras.layers.Dropout(0.5)),
+			keras.layers.TimeDistributed(keras.layers.Dense(64, activation="relu", kernel_regularizer='l1_l2')),
+			keras.layers.TimeDistributed(keras.layers.Dropout(0.25)),
+			keras.layers.RNN(ncp_cell, return_sequences=True),
+			keras.layers.TimeDistributed(keras.layers.Activation("softmax")),
+		]
+	)
+Log = 20220430-042647
+
+Model name is FFCNN and it uses dataset 2 & 3

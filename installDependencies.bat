@@ -1,0 +1,1 @@
+start cmd /k py -3 -m pip install tensorflow tensorflow-datasets tensorboard keras-ncp sklearn pillow seaborn pandas

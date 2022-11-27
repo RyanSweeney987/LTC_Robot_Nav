@@ -1,0 +1,7 @@
+{
+	"python.analysis.extraPaths": [
+		"C:\\Python310\\Scripts",
+		"C:\\Python310\\",
+		"C:\\Python310\\Lib\\site-packages",
+	]
+}
